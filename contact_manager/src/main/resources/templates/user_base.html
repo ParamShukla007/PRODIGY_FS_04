@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Contact Manager</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': {
+                            DEFAULT: '#c4322b',
+                            'light': '#d04b44',
+                            'dark': '#a52a24'
+                        },
+                        'brand-navy': {
+                            DEFAULT: '#1e2430',
+                            'light': '#2a3241',
+                            'dark': '#16191f'
+                        },
+                        'brand-cream': {
+                            DEFAULT: '#f5ecd6'
+                        },
+                        'brand-blue': {
+                            DEFAULT: '#1e3a8a'
+                        }
+                    },
+                    fontFamily: {
+                        'tahoma': ['Tahoma', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #c4322b;
+            font-family: Tahoma, sans-serif;
+            font-weight: bold;
+        }
+        
+        /* Sidebar layout */
+        .sidebar-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            z-index: 20;
+            transition: all 0.3s ease;
+        }
+        
+        .vertical-strip {
+            background-color: #1e2430;  /* Changed to navy color */
+            width: 110px;  /* Changed to match base.html */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 21;
+            position: relative;
+            padding-top: 40px;  /* Added to match base.html */
+        }
+        
+        /* Remove the navy-strip since we changed the background color */
+        .navy-strip {
+            display: none;
+        }
+        
+        /* Update vertical text container and text styles */
+        .vertical-text-container {
+            position: relative;
+            margin-top: 30px;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-orientation: mixed;
+            white-space: nowrap;
+            margin-top: 30px;
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1;
+            display: flex;
+            height: 80%;
+            text-align: center;
+            justify-content: center;
+            letter-spacing: 26px;
+            color: #f5ecd6;  /* Changed to cream color */
+        }
+        
+        .hexagon-logo {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .hexagon-logo:hover {
+            transform: scale(1.1);
+        }
+
+        .hexagon-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .sidebar {
+            background-color: #1e2430;
+            width: 220px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+            transition: all 0.3s ease;
+            padding-top: 20px;
+        }
+        
+        .user-info {
+            color: #f5ecd6;
+            padding: 15px 20px;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(245, 236, 214, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .user-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        
+        .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: flex-end; /* Move content to bottom */
+            padding-bottom: 20px; /* Add some padding at the bottom */
+        }
+        
+        .sidebar-title {
+            padding: 15px 20px;
+            color: #f5ecd6;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(245, 236, 214, 0.2);
+            border-bottom: 1px solid rgba(245, 236, 214, 0.1);
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .nav-link {
+            padding: 14px 20px;
+            color: #f5ecd6;
+            opacity: 0.8;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(245, 236, 214, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link:hover {
+            opacity: 1;
+            background-color: rgba(245, 236, 214, 0.05);
+        }
+        
+        .nav-link svg {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .sidebar-collapsed {
+            transform: translateX(-220px);
+        }
+        
+        /* Update the main-content class styles */
+        .main-content {
+            margin-left: 110px;
+            position: relative;
+            min-height: 100vh;
+            background-color: #c4322b;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+            padding-top: 40px;
+            padding-left: 220px; /* Add padding for sidebar */
+        }
+
+        /* Update the expanded state */
+        .main-content-expanded {
+            margin-left: 110px;
+            padding-left: 0; /* Remove padding when sidebar is collapsed */
+        }
+
+        /* Add transition to the content */
+        .main-content, .main-content-expanded {
+            transition: padding-left 0.3s ease, margin-left 0.3s ease;
+        }
+
+        /* Update the content wrapper */
+        .relative.z-10.px-8 {
+            position: relative;
+            z-index: 10;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        
+        .bg-texture {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23b72a24' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        /* Animation styles */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+
+        .navy-card {
+            background-color: #1e2430 !important;
+            border: 2px solid white !important;
+        }
+        .navy-card .card-title, .navy-card .card-text {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar with red vertical strip -->
+    <div class="sidebar-container">
+        <!-- Vertical Strip with Logo and Text -->
+        <div class="vertical-strip">
+            <!-- Navy strip at the right edge -->
+            <div class="navy-strip"></div>
+            
+            <!-- Hexagon logo with white border and navy fill, with X inside -->
+            <div class="hexagon-logo" id="toggle-sidebar">
+                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 25L50 10L75 25L90 50L75 75L50 90L25 75L10 50L25 25Z" stroke="#f5ecd6" stroke-width="4" fill="none"/>
+                    <path d="M40 40L60 60M60 40L40 60" stroke="#f5ecd6" stroke-width="4"/>
+                </svg>
+            </div>
+            
+            <!-- Updated vertical text to start from bottom with space for buttons -->
+            <div class="vertical-text-container">
+                <div class="vertical-text ">CONTACT VAULT</div>
+            </div>
+        </div>
+        
+        <!-- Main Sidebar Content -->
+        <div class="sidebar" id="sidebar">
+            <!-- User info section (replaces navbar) -->
+            <div class="user-info">
+                <div class="user-name" th:text="${user.name}">User Name</div>
+                <div class="text-brand-cream opacity-70 text-sm">Welcome back!</div>
+            </div>
+            
+            <!-- Content positioned at bottom -->
+            <div class="sidebar-content">
+                <!-- Navigation Links -->
+                <div class="nav-links">
+                    <!-- Home link (moved from navbar) -->
+                    <a href="/" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        Home
+                    </a>
+                    
+                    <a th:href="@{/user/show-contacts}" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        View Contacts
+                    </a>
+                    
+                    <a th:href="@{/user/add_contact}" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        Add Contacts
+                    </a>
+                    
+                    <a href="/your-profile" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Your Profile
+                    </a>
+                    
+                    <a href="/settings" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Settings
+                    </a>
+                    
+                    <a href="/logout" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <!-- Background texture -->
+        <div class="bg-texture"></div>
+        
+        <!-- Content from child templates -->
+        <div class="relative z-10 ">
+            <div th:replace="${content}"></div>
+        </div>
+    </div>
+    
+    <script th:src="@{/script.js}"></script>
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-fadeInUp');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.visibility = 'visible';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(element => {
+                element.style.visibility = 'hidden';
+                observer.observe(element);
+            });
+            
+            // Sidebar toggle functionality
+            const toggleSidebar = document.getElementById('toggle-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            
+            toggleSidebar.addEventListener('click', function() {
+                sidebar.classList.toggle('sidebar-collapsed');
+                mainContent.classList.toggle('main-content-expanded');
+            });
+        });
+    </script>
+</body>
+</html>

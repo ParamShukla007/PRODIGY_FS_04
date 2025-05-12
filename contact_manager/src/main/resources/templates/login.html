@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Contact Manager</title>
+</head>
+<body>
+    <section>
+        <div class="container mx-auto p-0 md:p-6 max-w-7xl">
+            <!-- Main Container - Boxy style -->
+            <div class="flex flex-col md:flex-row border-4 border-brand-navy shadow-lg overflow-hidden my-8">
+                <!-- Left Side - Just the centered logo -->
+                <div class="w-full md:w-1/3 bg-brand-navy flex justify-center items-center p-8">
+                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 25L50 10L75 25L90 50L75 75L50 90L25 75L10 50L25 25Z" stroke="#f5ecd6" stroke-width="4" fill="none"/>
+                        <path d="M40 40L60 60M60 40L40 60" stroke="#f5ecd6" stroke-width="4"/>
+                    </svg>
+                </div>
+                
+                <!-- Right Side - Form Section -->
+                <div class="w-full md:w-2/3 bg-brand-red p-8">
+                    <div class="mb-6">
+                        <h2 class="text-3xl font-bold text-brand-cream">LOGIN</h2>
+                    </div>
+                    <div th:if="${param.error}" class="text-red-500 mb-4">
+                        <p>Invalid username or password.</p>
+                    </div>
+
+                    <div th:if="${param.logout}" class="text-green-500 mb-4">
+                        <p>You have been logged out successfully.</p>
+                    </div>
+                    <form novalidate  th:action="@{/do-login}" method="post" class="flex flex-col gap-6">
+                        <!-- Username Field -->
+                        <div>
+                            <label for="username" class="block text-brand-cream text-sm font-bold mb-2">Username</label>
+                            <input type="text" 
+                                   name="username" 
+                                   id="username" 
+                                   required
+                                   class="w-full px-4 py-2 bg-transparent border-4 border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none"
+                                   placeholder="Enter your username">
+                        </div>
+                        
+                        <!-- Password Field -->
+                        <div>
+                            <label for="password" class="block text-brand-cream text-sm font-bold mb-2">Password</label>
+                            <input type="password" 
+                                   name="password" 
+                                   id="password" 
+                                   required
+                                   class="w-full px-4 py-2 bg-transparent border-4 border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none"
+                                   placeholder="Enter your password">
+                        </div>
+                        
+                        <!-- Remember Me Checkbox -->
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   name="remember-me" 
+                                   id="remember-me" 
+                                   class="w-4 h-4 border-2 border-brand-cream bg-transparent">
+                            <label for="remember-me" class="ml-2 text-brand-cream text-sm font-bold">Remember me</label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="mt-4 flex justify-center">
+                            <button type="submit" 
+                                    class="w-full md:w-2/3 py-3 bg-brand-navy border-4 border-brand-cream text-brand-cream font-bold text-lg hover:bg-brand-cream hover:text-brand-navy transition-all duration-300">
+                                LOGIN
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Signup Link -->
+                    <p class="mt-6 text-center text-brand-cream text-sm font-bold">
+                        New user? 
+                        <a th:href="@{/signup}" class="border-b-2 border-brand-cream hover:text-gray-200">Sign up here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Contact Vault</title>
+    
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': {
+                            DEFAULT: '#c4322b',
+                            'light': '#d04b44',
+                            'dark': '#a52a24'
+                        },
+                        'brand-navy': {
+                            DEFAULT: '#1e2430',
+                            'light': '#2a3241',
+                            'dark': '#16191f'
+                        },
+                        'brand-cream': {
+                            DEFAULT: '#f5ecd6'
+                        }
+                    },
+                    fontFamily: {
+                        'tahoma': ['Tahoma', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #c4322b;
+            font-family: Tahoma, sans-serif;
+            font-weight: bold;
+        }
+        
+        .sidebar {
+            background-color: #1e2430;
+            width: 110px;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 40px;
+            z-index: 20;
+        }
+        
+        .vertical-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-orientation: mixed;
+            white-space: nowrap;
+            margin-top: 30px;
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1;
+            display: flex;
+            height: 80%;
+            text-align: center;
+            justify-content: center;
+            letter-spacing: 2px;
+        }
+        
+        .main-content {
+            margin-left: 110px;
+            position: relative;
+            min-height: 100vh;
+            background-color: #c4322b;
+            overflow-x: hidden;
+        }
+        
+        .bg-texture {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23b72a24' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        /* Animation styles */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        
+        /* Navigation styles */
+        .nav-container {
+            background-color: rgba(30, 36, 48, 0.9);
+            padding: 1rem;
+        }
+        
+        .nav-link {
+            color: #f5ecd6;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: #d04b44;
+        }
+        
+        .nav-link.active {
+            border-bottom: 2px solid #f5ecd6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Logo -->
+        <div class="logo mb-4">
+            <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M25 25L50 10L75 25L90 50L75 75L50 90L25 75L10 50L25 25Z" stroke="#f5ecd6" stroke-width="4" fill="none"/>
+                <path d="M40 40L60 60M60 40L40 60" stroke="#f5ecd6" stroke-width="4"/>
+            </svg>
+        </div>
+        
+        <!-- Vertical Text Banner -->
+        <div class="vertical-text text-brand-cream" style="letter-spacing: 26px;">
+            CONTACT VAULT
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Background texture -->
+        <div class="bg-texture"></div>
+        
+        <!-- Navigation -->
+        <nav class="bg-brand-red sticky top-0 z-50 border-b border-brand-cream/20">
+            <div class="container mx-auto">
+                <div class="flex justify-center items-center h-16">
+                    <div class="flex space-x-16 lg:space-x-24">
+                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" href="/">Home</a>
+                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/about}">About</a>
+                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/signup}">Signup</a>
+                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/login}">Login</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile menu button - only visible on small screens -->
+            <div class="lg:hidden absolute top-0 right-0 p-4">
+                <button class="text-brand-cream" id="mobileMenuButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile menu - hidden by default -->
+            <div class="lg:hidden hidden bg-brand-red border-t border-brand-cream/20" id="mobileMenu">
+                <div class="container mx-auto py-3 px-4 space-y-2">
+                    <a class="nav-link block py-2 text-brand-cream font-bold" href="/">Home</a>
+                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/about}">About</a>
+                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/signup}">Signup</a>
+                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/login}">Login</a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Content from child templates -->
+        <div class="relative z-10">
+            <div th:replace="${content}">
+                <!-- This will be replaced by content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Intersection Observer for scroll animations
+            const animatedElements = document.querySelectorAll('.animate-fadeInUp');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.visibility = 'visible';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(element => {
+                element.style.visibility = 'hidden';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>

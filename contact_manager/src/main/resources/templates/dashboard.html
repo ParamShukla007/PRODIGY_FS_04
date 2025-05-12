@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)" th:replace="user_base::Layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <section>
+    <h1>This is dashboard</h1>
+    <h1>User name<span th:text="${user.name}"></span></h1>
+    <h1><a th:href="@{/logout}">logout</a></h1>
+    </section>
+</body>
+</html>
