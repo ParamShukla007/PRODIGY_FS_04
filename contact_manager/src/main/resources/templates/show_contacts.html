@@ -56,9 +56,11 @@
                             </div>
                             
                             <div class="flex justify-end mt-4 space-x-2">
-                                <a class="bg-brand-cream text-brand-navy px-3 py-1 rounded hover:bg-opacity-90 transition duration-300">
+                                <form method= "POST" th:action="@{'/user/update-contact/' + ${c.contact_id}}">
+                                <button type="submit" class="bg-brand-cream text-brand-navy px-3 py-1 rounded hover:bg-opacity-90 transition duration-300">
                                     Edit
-                                </a>
+                                </button>
+                                </form>
                                 <a th:href="@{'/user/delete-contact/' + ${c.contact_id}}" class="bg-brand-red text-white px-3 py-1 rounded hover:bg-opacity-90 transition duration-300">
                                     Delete
                                 </a>

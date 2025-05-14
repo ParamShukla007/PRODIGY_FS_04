@@ -28,6 +28,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Controller
 @RequestMapping("/user")
@@ -37,6 +38,9 @@ public class UserController {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     // Add this method to make user available in all templates
     @ModelAttribute
     public void addCommonAttributes(Model model, Principal principal) {
@@ -150,10 +154,10 @@ public class UserController {
             Contact contact = contactOptional.get();
             contact.setUser(null);
             File contactImageFile = new ClassPathResource("static/img/contacts").getFile();
-                File contactImage = new File(contactImageFile, contact.getImageUrl());
-                if (contactImage.exists()) {
+            File contactImage = new File(contactImageFile, contact.getImageUrl());
+            if (contactImage.exists()) {
                     contactImage.delete();
-                }
+            }
             this.contactRepository.delete(contact);
             session.setAttribute("message", new Message("Contact deleted successfully!", "success"));
         }catch(Exception e){
@@ -162,4 +166,97 @@ public class UserController {
         }
         return "redirect:/user/show-contacts/0";
     }
+
+    @PostMapping("/update-contact/{contact_id}")
+    public String updateFrom(@PathVariable("contact_id") Integer contact_id, Model m)
+    {
+        m.addAttribute("title", "Update Contact");
+         Contact contact = this.contactRepository.findById(contact_id).get();
+        m.addAttribute("contact", contact);
+        return "update_contact";
+    }
+
+    @PostMapping("/process-update")
+    public String processUpdate(Principal principal, @ModelAttribute Contact contact, @RequestParam("imageFile") MultipartFile file, Model m, HttpSession session)
+    {
+        try{
+            // Get the contact from the database
+            Contact oldContact = this.contactRepository.findById(contact.getContact_id()).get();
+           //Processing and uploading file
+            if (!(file.isEmpty())) {
+                // Save the file to the folder and update the name of contact
+                //delete old image
+                File deleteFile = new ClassPathResource("static/img/contacts").getFile();
+                File oldContactImageFile = new File(deleteFile, oldContact.getImageUrl());
+                if (oldContactImageFile.exists()) {
+                    oldContactImageFile.delete();
+                }
+                //update new image
+                File saveFile = new ClassPathResource("static/img/contacts").getFile();
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                contact.setImageUrl(file.getOriginalFilename());
+            } 
+            User user = this.userRepository.getUserByUserEmail(principal.getName());
+            contact.setUser(user);
+            this.contactRepository.save(contact);
+            session.setAttribute("message", new Message("Contact updated successfully!", "success"));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            session.setAttribute("message", new Message("Something went wrong! " + e.getMessage(), "danger"));
+        }
+        return "redirect:/user/show-contacts/0";
+    }
+    @GetMapping("/profile")
+    public String profile(Model m, Principal p)
+    {
+        String userName = p.getName();
+        User user = userRepository.getUserByUserEmail(userName);
+        m.addAttribute("user", user);
+        m.addAttribute("title", "Profile");
+        return "profile";
+    }
+    
+    @PostMapping("/update-password/{user_id}")
+    public String updatePassword(@PathVariable("user_id") Integer user_id, Model m)
+    {
+        m.addAttribute("title", "Update User Password");
+        User user = this.userRepository.findById(user_id).get();
+        m.addAttribute("user", user);
+        return "update_password";
+    }
+
+    //update user password
+    @PostMapping("/process-update-password")
+    public String updateUserPassword(
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("confirmPassword") String confirmPassword,
+            Principal principal,
+            HttpSession session) {
+        try {
+            // Validate that the passwords match
+            if (!newPassword.equals(confirmPassword)) {
+                session.setAttribute("message", new Message("Passwords do not match!", "danger"));
+                return "redirect:/user/update-password/" + userRepository.getUserByUserEmail(principal.getName()).getUser_id();
+            }
+
+            // Get the currently logged-in user
+            String userName = principal.getName();
+            User oldUser = userRepository.getUserByUserEmail(userName);
+
+            // Update the password
+            oldUser.setPassword(passwordEncoder.encode(confirmPassword));
+            this.userRepository.save(oldUser);
+
+            // Success message
+            session.setAttribute("message", new Message("Password updated successfully!", "success"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("message", new Message("Something went wrong! " + e.getMessage(), "danger"));
+        }
+        return "redirect:/user/profile";
+    }
 }
+
+
