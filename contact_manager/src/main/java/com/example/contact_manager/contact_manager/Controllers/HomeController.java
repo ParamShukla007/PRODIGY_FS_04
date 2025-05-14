@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 
 import com.example.contact_manager.contact_manager.entities.User;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,8 @@ import java.nio.file.StandardCopyOption;
 import com.example.contact_manager.contact_manager.doa.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import com.example.contact_manager.contact_manager.Helper.Message;
-import jakarta.validation.Valid;
+
+import org.springframework.core.io.ClassPathResource;
 
 @Controller
 public class HomeController {
@@ -62,60 +62,41 @@ public class HomeController {
     //handler for registration
     @PostMapping("/do_register")
     public String registerUser(
-            @Valid @ModelAttribute("user") User user,
-            BindingResult result,
-            @RequestParam(value = "terms", defaultValue = "false") boolean terms,
-            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-            Model model,
+            @ModelAttribute("user") User user,
+            @RequestParam(value = "imageFile", required = false) MultipartFile file,
             HttpSession session) {
         try {
-            if(result.hasErrors()) {
-                model.addAttribute("title", "Register - Smart Contact Manager");
-                model.addAttribute("user", user);  // Add this line
-                return "signup";  // Return with validation errors
+            // Handle profile image upload
+            if (file != null && !file.isEmpty()) {
+                // Save the new profile image
+                File saveFile = new ClassPathResource("static/img/profile").getFile();
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                // Update the image URL in the user object
+                user.setImageUrl(file.getOriginalFilename());
+            } else {
+                // Set a default profile image if no file is uploaded
+                user.setImageUrl("default.png");
             }
 
-            // Then check terms
-            if(!terms) {
-                session.setAttribute("message", new Message("You must accept the terms and conditions", "alert-danger"));
-                model.addAttribute("user", user);  // Add this line
-                return "signup";
-            }
-
-            // Process image if present
-            if(imageFile != null && !imageFile.isEmpty()) {
-                // Define upload directory path
-                String uploadDir = "src/main/resources/static/img/profile/";
-                File dir = new File(uploadDir);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                // Generate unique filename
-                String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                
-                // Save file
-                Path path = Paths.get(uploadDir + fileName);
-                Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-                
-                // Set imageUrl in user object
-                user.setImageUrl("/img/profile/" + fileName);
-            }
-
-            // Set default values and save
-            user.setRole("ROLE_USER");
-            user.setIs_enbled(true);
+            // Encrypt the password
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-            this.userRepository.save(user);
-            session.setAttribute("message", new Message("Successfully Registered !!", "alert-success"));
-            return "redirect:/login";  // Change this to redirect to login
+            // Set other default values (e.g., roles, enabled status)
+            user.setRole("ROLE_USER");
+            user.setIs_enbled(true);
 
+            // Save the user to the database
+            userRepository.save(user);
+
+            // Set success message
+            session.setAttribute("message", new Message("User registered successfully!", "success"));
+            return "redirect:/login";
         } catch (Exception e) {
             e.printStackTrace();
-            session.setAttribute("message", new Message("Something went wrong!! " + e.getMessage(), "alert-danger"));
-            model.addAttribute("user", user);  // Add this line
-            return "signup";
+            session.setAttribute("message", new Message("Something went wrong! " + e.getMessage(), "danger"));
+            return "redirect:/signup";
         }
     }
 }

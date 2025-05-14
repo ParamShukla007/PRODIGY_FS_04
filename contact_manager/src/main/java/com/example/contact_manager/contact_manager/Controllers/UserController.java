@@ -218,6 +218,60 @@ public class UserController {
         return "profile";
     }
     
+    @PostMapping("/update-user/{user_id}")
+    public String updateUser(@PathVariable("user_id") Integer user_id, Model m)
+    {
+        m.addAttribute("title", "Update User Password");
+        User user = this.userRepository.findById(user_id).get();
+        m.addAttribute("user", user);
+        return "update_user";
+    }
+
+    @PostMapping("/process-update-user")
+    public String processUpdateUser(
+            Principal principal,
+            @ModelAttribute User updatedUser,
+            @RequestParam(value = "imageFile", required = false) MultipartFile file,
+            HttpSession session) {
+        try {
+            // Retrieve the currently logged-in user
+            User existingUser = this.userRepository.getUserByUserEmail(principal.getName());
+
+            // Update user details only if they are provided
+            if (updatedUser.getName() != null && !updatedUser.getName().isEmpty()) {
+                existingUser.setName(updatedUser.getName());
+            }
+            if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
+                existingUser.setEmail(updatedUser.getEmail());
+            }
+            if (updatedUser.getPhone_no() != null && !updatedUser.getPhone_no().isEmpty()) {
+                existingUser.setPhone_no(updatedUser.getPhone_no());
+            }
+
+            // Handle profile image upload
+            if (file != null && !file.isEmpty()) {
+                // Save the new profile image
+                File saveFile = new ClassPathResource("static/img/profile").getFile();
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                // Update the image URL in the user object
+                existingUser.setImageUrl(file.getOriginalFilename());
+            }
+
+            // Save the updated user to the database
+            this.userRepository.save(existingUser);
+
+            // Set success message
+            session.setAttribute("message", new Message("User updated successfully!", "success"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("message", new Message("Something went wrong! " + e.getMessage(), "danger"));
+        }
+
+        return "redirect:/user/profile";
+    }
+
     @PostMapping("/update-password/{user_id}")
     public String updatePassword(@PathVariable("user_id") Integer user_id, Model m)
     {
