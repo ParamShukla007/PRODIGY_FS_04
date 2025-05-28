@@ -30,8 +30,15 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepository;
-
+    
     @GetMapping("/")
+    public String Home1(Model model)
+    {
+        model.addAttribute("title", "Home - Smart Contact Manager");
+        return "home";
+    }
+
+    @GetMapping("/home")
     public String Home(Model model)
     {
         model.addAttribute("title", "Home - Smart Contact Manager");

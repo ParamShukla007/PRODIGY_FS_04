@@ -185,7 +185,7 @@
             <div class="container mx-auto">
                 <div class="flex justify-center items-center h-16">
                     <div class="flex space-x-16 lg:space-x-24">
-                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" href="/">Home</a>
+                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/home}">Home</a>
                         <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/about}">About</a>
                         <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/signup}">Signup</a>
                         <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/login}">Login</a>
@@ -205,7 +205,7 @@
             <!-- Mobile menu - hidden by default -->
             <div class="lg:hidden hidden bg-brand-red border-t border-brand-cream/20" id="mobileMenu">
                 <div class="container mx-auto py-3 px-4 space-y-2">
-                    <a class="nav-link block py-2 text-brand-cream font-bold" href="/">Home</a>
+                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/home}">Home</a>
                     <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/about}">About</a>
                     <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/signup}">Signup</a>
                     <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/login}">Login</a>
