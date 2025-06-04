@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/199/xhtml" xml:lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -287,6 +287,32 @@
         .navy-card .card-title, .navy-card .card-text {
             color: white !important;
         }
+         #chatArea {
+            background-color: #1a1a2e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            border: 2px solid #000000; /* Added black border */
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            height: 400px; /* Fixed height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Added subtle shadow */
+        }
+
+        .chat-message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #2e2e4d;
+            border: 1px solid #444; /* Added border to messages */
+        }
+
+        .chat-message strong {
+            color: #ffcc00;
+        }
     </style>
 </head>
 <body>
@@ -315,8 +341,7 @@
         <div class="sidebar" id="sidebar">
             <!-- User info section (replaces navbar) -->
             <div class="user-info">
-                <div class="user-name" th:text="${user.name}">User Name</div>
-                <div class="text-brand-cream opacity-70 text-sm">Welcome back!</div>
+                <div class="user-name">CHAT VAULT</div>
             </div>
             
             <!-- Content positioned at bottom -->
@@ -324,49 +349,12 @@
                 <!-- Navigation Links -->
                 <div class="nav-links">
                 
-                     <a th:href="@{/user/chat}" class="nav-link">
+                     <a th:href="@{/user/dashboard}" class="nav-link">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                  d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>
-                        Chat Vault
-                    </a>
-
-                    <a th:href="@{/user/show-contacts}" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        View Contacts
-                    </a>
-                    
-                    <a th:href="@{/user/add_contact}" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                        </svg>
-                        Add Contacts
-                    </a>
-                    
-                    <a th:href="@{/user/profile}" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        Your Profile
-                    </a>
-                    <form method="POST" th:action="@{'/user/update-password/' + ${user.user_id}}" class="border-b border-opacity-10 border-brand-cream">
-                        <button type="submit" class="nav-link w-full text-left">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                            Settings
-                        </button>
-                    </form>
-                    
-                    <a href="/logout" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        Logout
+                        Go Back
                     </a>
                 </div>
             </div>
@@ -379,7 +367,144 @@
         
         <!-- Content from child templates -->
         <div class="relative z-10 ">
-            <div th:replace="${content}"></div>
+             <section>
+        <div class="container mx-auto p-0 md:p-6 max-w-7xl">
+            <div class="flex flex-col md:flex-row border-4 border-brand-navy shadow-lg overflow-hidden my-8">
+                
+                <!-- Left Sidebar -->
+                <div class="w-full md:w-1/3 bg-brand-navy flex justify-center items-center p-8">
+                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 25L50 10L75 25L90 50L75 75L50 90L25 75L10 50L25 25Z" stroke="#f5ecd6" stroke-width="4" fill="none"/>
+                        <path d="M40 40L60 60M60 40L40 60" stroke="#f5ecd6" stroke-width="4"/>
+                    </svg>
+                </div>
+
+                <!-- Chat Interface -->
+                <div class="w-full md:w-3/4 bg-brand-red p-8">
+                    <div class="mb-6">
+                        <h2 class="text-3xl font-bold text-brand-cream">Real-Time Chat</h2>
+                    </div>
+
+                    <!-- Chat Messages Area -->
+                    <div id="chatArea" class="mb-6 h-96 overflow-y-auto border-4 border-brand-cream p-4 rounded-lg bg-brand-navy">
+                        <!-- Messages will appear here -->
+                    </div>
+
+                    <!-- User Input Form -->
+                    <div class="space-y-4">
+                        <!-- Name Input -->
+                        <div>
+                            <input type="text" 
+                                   id="userName"
+                                   class="w-full px-4 py-2 bg-transparent border-4 border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none rounded-lg"
+                                   placeholder="Your name...">
+                        </div>
+
+                        <!-- Message Input -->
+                        <div class="flex gap-2">
+                            <input type="text" 
+                                   id="messageInput"
+                                   class="flex-grow px-4 py-2 bg-transparent border-4 border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none rounded-lg"
+                                   placeholder="Type a message...">
+                            
+                            <button id="sendButton"
+                                    type="button"
+                                    class="px-6 py-2 bg-brand-navy border-4 border-brand-cream text-brand-cream font-bold hover:bg-brand-cream hover:text-brand-navy transition-all duration-300 rounded-lg">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </section>
+
+    <!-- Move scripts here, just before closing section tag -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        // Define variables in global scope
+        var stompClient = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded and parsed'); // Debug log
+
+            const sendButton = document.getElementById('sendButton');
+            if (sendButton) {
+                console.log('Send button found'); // Debug log
+                sendButton.addEventListener('click', function() {
+                    console.log('Send button clicked'); // Debug log
+                    sendMessage();
+                });
+            } else {
+                console.error('Send button not found'); // Debug log
+            }
+
+            connect();
+        });
+
+        // Define sendMessage function
+        function sendMessage() {
+            console.log('sendMessage function called'); // Debug log
+
+            const messageInput = document.getElementById('messageInput');
+            const userName = document.getElementById('userName').value;
+
+            if (messageInput.value && userName) {
+                const msg = {
+                    'sender': userName,
+                    'content': messageInput.value
+                };
+
+                try {
+                    console.log("Sending message:", msg); // Debug log
+                    if (stompClient && stompClient.connected) {
+                        stompClient.send("/app/sendMessage", {}, JSON.stringify(msg));
+                        messageInput.value = '';
+                    } else {
+                        console.error('WebSocket not connected');
+                        alert('Not connected to chat server. Please refresh the page.');
+                    }
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                }
+            } else {
+                alert('Please enter both name and message');
+            }
+        }
+
+        // Connect function
+        function connect() {
+            console.log("Attempting to connect..."); // Debug log
+            let socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, 
+                function(frame) {
+                    console.log('Connected: ' + frame); // Debug log
+                    stompClient.subscribe('/topic/messages', function(message) {
+                        console.log('Received message:', message.body); // Debug log
+                        showMessage(JSON.parse(message.body));
+                    });
+                },
+                function(error) {
+                    console.error('Connection error:', error);
+                    alert('Failed to connect to the chat server. Please try again later.');
+                }
+            );
+        }
+
+        function showMessage(message) {
+            let chatArea = document.getElementById('chatArea');
+            let messageElement = document.createElement('div');
+            messageElement.className = 'chat-message';
+            messageElement.innerHTML = `<strong>${message.sender}:</strong> ${message.content}`;
+            chatArea.appendChild(messageElement);
+
+            // Scroll to the bottom of the chat area
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+    </script>
         </div>
     </div>
     
@@ -409,8 +534,8 @@
             toggleSidebar.addEventListener('click', function() {
                 sidebar.classList.toggle('sidebar-collapsed');
                 mainContent.classList.toggle('main-content-expanded');
-        }); });
+            });
+        });
     </script>
-</body>cript>
-</html>
+</body>
 </html>
