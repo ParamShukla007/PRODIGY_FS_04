@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Smart Contact Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-navy': '#1e2430',
+                        'brand-red': '#FF4646'  // Changed from brand-cream to brand-red
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-navy min-h-screen">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="text-center">
+            <!-- Error Icon -->
+            <div class="mb-8">
+                <svg class="w-24 h-24 mx-auto text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+            </div>
+            
+            <!-- Error Message -->
+            <h1 class="text-4xl font-bold text-brand-red mb-4">Oops! Something went wrong</h1>
+            <p class="text-xl text-brand-red/80 mb-8" th:text="${errorMessage}">Error message here</p>
+            
+            <!-- Error Code -->
+            <p class="text-brand-red/60 mb-8" th:text="${'Error Code: ' + status}">Error Code: 500</p>
+            
+            <!-- Navigation Buttons -->
+            <div class="space-x-4">
+                <a href="/" 
+                   class="inline-block px-6 py-3 bg-brand-red text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all">
+                    Back to Home
+                </a>
+                <button onclick="window.history.back()" 
+                        class="inline-block px-6 py-3 bg-transparent border-2 border-brand-red text-brand-red font-semibold rounded-lg hover:bg-brand-red hover:text-white transition-all">
+                    Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

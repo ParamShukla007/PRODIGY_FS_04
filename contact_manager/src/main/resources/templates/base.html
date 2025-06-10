@@ -156,6 +156,15 @@
         .nav-link.active {
             border-bottom: 2px solid #f5ecd6;
         }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Add styles for the about section */
+        #about {
+            scroll-margin-top: 4rem;
+        }
     </style>
 </head>
 <body>
@@ -181,36 +190,18 @@
         <div class="bg-texture"></div>
         
         <!-- Navigation -->
-        <nav class="bg-brand-red sticky top-0 z-50 border-b border-brand-cream/20">
+        <nav class="bg-brand-red sticky top-0 z-50">
             <div class="container mx-auto">
                 <div class="flex justify-center items-center h-16">
                     <div class="flex space-x-16 lg:space-x-24">
                         <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/home}">Home</a>
-                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/about}">About</a>
+                        <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/home#about}">About</a>
                         <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/signup}">Signup</a>
                         <a class="nav-link text-brand-cream font-bold text-lg tracking-wider" th:href="@{/login}">Login</a>
                     </div>
                 </div>
             </div>
             
-            <!-- Mobile menu button - only visible on small screens -->
-            <div class="lg:hidden absolute top-0 right-0 p-4">
-                <button class="text-brand-cream" id="mobileMenuButton">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Mobile menu - hidden by default -->
-            <div class="lg:hidden hidden bg-brand-red border-t border-brand-cream/20" id="mobileMenu">
-                <div class="container mx-auto py-3 px-4 space-y-2">
-                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/home}">Home</a>
-                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/about}">About</a>
-                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/signup}">Signup</a>
-                    <a class="nav-link block py-2 text-brand-cream font-bold" th:href="@{/login}">Login</a>
-                </div>
-            </div>
         </nav>
         
         <!-- Content from child templates -->
@@ -250,6 +241,33 @@
                 observer.observe(element);
             });
         });
+        
+        // Enhanced smooth scroll for About link
+        document.querySelectorAll('a[href$="#about"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // Only prevent default if we're already on the home page
+                if (window.location.pathname === '/' || window.location.pathname === '/home') {
+                    e.preventDefault();
+                    document.querySelector('#about').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    // Close mobile menu if open
+                    if (mobileMenu) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+                // Otherwise, let the link navigate normally to home#about
+            });
+        });
+
+        // Check if URL has #about hash and scroll if needed
+        if (window.location.hash === '#about') {
+            setTimeout(() => {
+                document.querySelector('#about').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }, 300); // Small delay to ensure content is loaded
+        }
     </script>
 </body>
 </html>

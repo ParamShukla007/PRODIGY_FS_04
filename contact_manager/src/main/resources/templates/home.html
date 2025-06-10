@@ -9,31 +9,31 @@
     <!-- This template will use the layout from base.html -->
     <section>
         <!-- Header Banner -->
-        <div class="w-full mx-auto mb-16">
+        <div class="w-full mx-auto mb-8 md:mb-16">
             <div class="flex">
                
             </div>
         </div>
         
         <!-- Main Content Section -->
-        <div class="container mx-auto px-8 md:px-16 lg:px-24">
-            <div class="flex flex-col md:flex-row gap-8 items-start">
+        <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
+            <div class="flex flex-col lg:flex-row gap-6 md:gap-8 items-start">
                 <!-- Main Heading -->
-                <div class="w-full md:w-1/2">
-                    <h2 class="text-5xl md:text-6xl text-brand-cream font-bold leading-tight">
+                <div class="w-full lg:w-1/2">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-brand-cream font-bold leading-tight">
                         Contacts made simple, secure, and smart.
                     </h2>
                     
-                    <div class="mt-8">
-                        <a th:href="@{/signup}" class="inline-block bg-transparent border-2 border-brand-cream text-brand-cream font-bold py-3 px-8 hover:bg-brand-cream hover:text-brand-red transition-all duration-300">
+                    <div class="mt-6 md:mt-8">
+                        <a th:href="@{/signup}" class="inline-block bg-transparent border-2 border-brand-cream text-brand-cream font-bold py-3 px-6 md:px-8 text-sm md:text-base hover:bg-brand-cream hover:text-brand-red transition-all duration-300 w-full sm:w-auto text-center">
                             GET STARTED
                         </a>
                     </div>
                 </div>
                 
                 <!-- Description -->
-                <div class="w-full md:w-1/2 border-l-2 border-brand-cream pl-8">
-                    <p class="text-brand-cream text-lg font-normal">
+                <div class="w-full lg:w-1/2 border-l-0 lg:border-l-2 border-t-2 lg:border-t-0 border-brand-cream pl-0 lg:pl-8 pt-6 lg:pt-0">
+                    <p class="text-brand-cream text-base md:text-lg font-normal">
                         We aim to transform how you organize contacts, grow your network, and streamline your communication with a smart system that caters to your ease of accessibility.
                     </p>
                 </div>
@@ -41,26 +41,271 @@
         </div>
         
         <!-- Features Section - Hidden Initially, Could Be Scrolled To -->
-        <div class="relative z-10 px-6 md:px-12 py-24 container mx-auto text-brand-cream mt-20">
-            <h2 class="text-2xl md:text-3xl font-bold mb-8 animate-fadeInUp">Smart Features</h2>
+        <div class="relative z-10 px-4 sm:px-6 md:px-12 py-12 md:py-24 container mx-auto text-brand-cream mt-10 md:mt-20">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-6 md:mb-8 animate-fadeInUp text-center lg:text-left">Smart Features</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-brand-navy p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-100">
-                    <h3 class="text-xl font-bold mb-3">Easy Organization</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+                <div class="bg-brand-navy p-4 md:p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-100">
+                    <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Easy Organization</h3>
                     <p class="text-sm font-normal">Categorize and manage your contacts for quick and efficient access.</p>
                 </div>
                 
-                <div class="bg-brand-navy p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-300">
-                    <h3 class="text-xl font-bold mb-3">Add Contacts</h3>
+                <div class="bg-brand-navy p-4 md:p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-300">
+                    <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Add Contacts</h3>
                     <p class="text-sm font-normal">Easily add new contacts to your vault with just a few clicks.</p>
                 </div>
                 
-                <div class="bg-brand-navy p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-500">
-                    <h3 class="text-xl font-bold mb-3">Edit Contacts</h3>
+                <div class="bg-brand-navy p-4 md:p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-500">
+                    <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Edit Contacts</h3>
                     <p class="text-sm font-normal">Update or edit your contact details anytime to keep your information current.</p>
+                </div>
+                <div class="bg-brand-navy p-4 md:p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-100">
+                    <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Secure Storage</h3>
+                    <p class="text-sm font-normal">Your contact information is protected with enterprise-grade security measures and encrypted storage.</p>
+                </div>
+                <div class="bg-brand-navy p-4 md:p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-100">
+                    <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">User Profiles</h3>
+                    <p class="text-sm font-normal">Customize your profile and manage your account settings with our intuitive user interface.</p>
+                </div>
+                <div class="bg-brand-navy p-4 md:p-6 border-2 border-brand-cream transform transition-all duration-300 hover:bg-opacity-90 animate-fadeInUp delay-100">
+                    <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Real Time Chat</h3>
+                    <p class="text-sm font-normal">Connect instantly with your contacts through our secure real-time chat system, enabling seamless communication.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about" class="w-full bg-[#161b24] mt-10 md:mt-20 py-12 md:py-24">
+            <div class="container mx-auto p-4 sm:p-6 max-w-7xl">
+                <div class="space-y-8 md:space-y-16">
+                    <!-- Combined Mission and Story Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12">
+                        <!-- Mission Section -->
+                        <div class="relative group">
+                            <div class="relative bg-brand-navy/40 p-4 md:p-8 rounded-lg border-2 border-brand-cream">
+                                <h2 class="text-2xl md:text-3xl font-bold text-brand-cream mb-4 md:mb-6">Our Mission</h2>
+                                <p class="text-brand-cream opacity-80 text-base md:text-lg leading-relaxed">
+                                    At Contact Vault, our mission is to provide a secure, intuitive, and efficient platform for managing your professional and personal connections. 
+                                    We believe in making contact management not just a task, but an experience that enhances your relationships and productivity.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Story Section -->
+                        <div class="relative group">
+                            <div class="relative bg-brand-navy/40 p-4 md:p-8 rounded-lg border-2 border-brand-cream">
+                                <h2 class="text-2xl md:text-3xl font-bold text-brand-cream mb-4 md:mb-6">Our Story</h2>
+                                <div class="text-brand-cream opacity-80 text-base md:text-lg leading-relaxed space-y-3 md:space-y-4">
+                                    <p>Founded in 2025, Contact Vault emerged from a simple observation: managing contacts across multiple platforms was becoming increasingly complex and insecure.</p>
+                                    <p>We set out to create a solution that would not only organize contacts efficiently but also provide a secure environment for storing sensitive information and enable real-time communication.</p>
+                                    <p>Today, Contact Vault stands as a testament to our commitment to innovation, security, and user experience.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Technology Stack -->
+                    <div class="relative bg-brand-navy/40 p-4 md:p-8 rounded-lg border-2 border-brand-cream text-center">
+                        <h2 class="text-2xl md:text-3xl font-bold text-brand-cream mb-6 md:mb-8">Built With Modern Technology</h2>
+                        <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+                            <span class="px-3 py-2 md:px-6 md:py-3 bg-brand-navy border-2 border-brand-cream rounded-full text-brand-cream hover:bg-brand-red transition-colors duration-300 text-sm md:text-base">Spring Boot</span>
+                            <span class="px-3 py-2 md:px-6 md:py-3 bg-brand-navy border-2 border-brand-cream rounded-full text-brand-cream hover:bg-brand-red transition-colors duration-300 text-sm md:text-base">Spring Security</span>
+                            <span class="px-3 py-2 md:px-6 md:py-3 bg-brand-navy border-2 border-brand-cream rounded-full text-brand-cream hover:bg-brand-red transition-colors duration-300 text-sm md:text-base">Spring JPA</span>
+                            <span class="px-3 py-2 md:px-6 md:py-3 bg-brand-navy border-2 border-brand-cream rounded-full text-brand-cream hover:bg-brand-red transition-colors duration-300 text-sm md:text-base">HTML</span>
+                            <span class="px-3 py-2 md:px-6 md:py-3 bg-brand-navy border-2 border-brand-cream rounded-full text-brand-cream hover:bg-brand-red transition-colors duration-300 text-sm md:text-base">Thymeleaf</span>
+                            <span class="px-3 py-2 md:px-6 md:py-3 bg-brand-navy border-2 border-brand-cream rounded-full text-brand-cream hover:bg-brand-red transition-colors duration-300 text-sm md:text-base">MySQL</span>
+                            <span class="px-3 py-2 md:px-6 md:py-3 bg-brand-navy border-2 border-brand-cream rounded-full text-brand-cream hover:bg-brand-red transition-colors duration-300 text-sm md:text-base">Tailwind CSS</span>
+                        </div>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <div class="relative bg-brand-navy/40 p-4 md:p-8 rounded-lg border-2 border-brand-cream text-center">
+                        <h2 class="text-2xl md:text-3xl font-bold text-brand-cream mb-3 md:mb-4">Get in Touch</h2>
+                        <p class="text-brand-cream opacity-80 mb-4 md:mb-6 text-sm md:text-base">Have questions or suggestions? We'd love to hear from you!</p>
+                        <div class="inline-flex items-center justify-center space-x-2 bg-brand-navy border-2 border-brand-cream rounded-lg px-4 py-2 md:px-6 md:py-3 hover:bg-brand-red transition-colors duration-300">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 text-brand-cream" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <a href="mailto:contact.vault@gmail.com" class="text-lg md:text-xl text-brand-cream break-all sm:break-normal">
+                                contact.vault@gmail.com
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Scroll to Top Button - Single instance -->
+    <button id="scrollToTop" class="scroll-to-top-btn">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-brand-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+        </svg>
+    </button>
+
+    <!-- Styles -->
+    <style>
+        /* Existing styles */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        #about {
+            scroll-margin-top: 4rem;
+        }
+
+        /* Animation classes */
+        .animate-on-scroll {
+            transition: all 1s ease-out;
+        }
+
+        .animate-on-scroll.show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* Add animation delays for staggered effect */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Fixed Scroll to Top Button Styles */
+        .scroll-to-top-btn {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            background-color: #ff4646; /* brand-red */
+            border: 2px solid #f5f5dc; /* brand-cream */
+            border-radius: 50%;
+            padding: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+        }
+
+        .scroll-to-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top-btn:hover {
+            transform: scale(1.1) translateY(0);
+            box-shadow: 0 6px 20px rgba(255, 70, 70, 0.4);
+            background-color: rgba(255, 70, 70, 0.9);
+        }
+
+        .scroll-to-top-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Custom brand colors for fallback */
+        :root {
+            --brand-red: #ff4646;
+            --brand-cream: #f5f5dc;
+            --brand-navy: #1a1a2e;
+        }
+
+        /* Mobile and tablet responsiveness */
+        @media (min-width: 640px) {
+            .scroll-to-top-btn {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 56px;
+                height: 56px;
+                padding: 1rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .scroll-to-top-btn {
+                bottom: 2rem;
+                right: 2rem;
+            }
+        }
+
+        /* Ensure proper spacing on mobile */
+        @media (max-width: 639px) {
+            .scroll-to-top-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scroll handling
+        document.querySelectorAll('a[href="#about"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target); // Stop observing once animated
+                }
+            });
+        }, observerOptions);
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe all elements with animate-on-scroll class
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            animatedElements.forEach(el => observer.observe(el));
+
+            // Scroll to Top button functionality
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            const rootElement = document.documentElement;
+
+            function handleScroll() {
+                const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
+                const scrollProgress = rootElement.scrollTop / scrollTotal;
+                
+                // Show button after scrolling 15% of the page
+                if (scrollProgress > 0.15) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+            }
+
+            function scrollToTop() {
+                rootElement.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Add event listeners
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            scrollToTopBtn.addEventListener('click', scrollToTop);
+
+            // Initial check in case page is already scrolled
+            handleScroll();
+        });
+    </script>
 </body>
 </html>

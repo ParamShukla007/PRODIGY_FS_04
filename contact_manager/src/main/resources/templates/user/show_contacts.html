@@ -1,0 +1,21 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Contact Cards -->
+    <div th:each="contact : ${contacts}" class="relative group p-2">
+        <div class="absolute inset-0.5 bg-gradient-to-r from-brand-red to-brand-navy rounded-none blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
+        <div class="relative bg-brand-navy p-4 sm:p-6 rounded-none border-2 border-brand-cream">
+            <!-- Card Content -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <img th:src="@{'/img/' + ${contact.image}}" class="w-16 h-16 rounded-full">
+                <div class="flex-1">
+                    <h3 class="text-lg sm:text-xl font-bold text-brand-cream" th:text="${contact.name}"></h3>
+                    <p class="text-sm sm:text-base text-brand-cream opacity-80" th:text="${contact.email}"></p>
+                </div>
+            </div>
+            <!-- Actions -->
+            <div class="mt-4 flex flex-wrap gap-2">
+                <a th:href="@{'/user/contact/' + ${contact.cId}}" class="btn-primary text-sm">View</a>
+                <a th:href="@{'/user/delete/' + ${contact.cId}}" class="btn-danger text-sm">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

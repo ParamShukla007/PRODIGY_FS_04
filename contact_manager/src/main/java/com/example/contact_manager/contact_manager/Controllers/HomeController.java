@@ -5,22 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
-
 import com.example.contact_manager.contact_manager.entities.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-
 import com.example.contact_manager.contact_manager.doa.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import com.example.contact_manager.contact_manager.Helper.Message;
-
-import org.springframework.core.io.ClassPathResource;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Controller
 public class HomeController {
@@ -30,6 +25,9 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
     
     @GetMapping("/")
     public String Home1(Model model)
@@ -43,13 +41,6 @@ public class HomeController {
     {
         model.addAttribute("title", "Home - Smart Contact Manager");
         return "home";
-    }
-
-    @GetMapping("/about")
-    public String About(Model model)
-    {
-        model.addAttribute("title", "About - Smart Contact Manager");
-        return "about";
     }
 
     @GetMapping("/signup")
@@ -74,17 +65,16 @@ public class HomeController {
             HttpSession session) {
         try {
             // Handle profile image upload
+                // Handle image upload
             if (file != null && !file.isEmpty()) {
-                // Save the new profile image
-                File saveFile = new ClassPathResource("static/img/profile").getFile();
-                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
-                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-                // Update the image URL in the user object
-                user.setImageUrl(file.getOriginalFilename());
-            } else {
-                // Set a default profile image if no file is uploaded
-                user.setImageUrl("default.png");
+                try {
+                    String imageUrl = cloudinaryService.uploadFile(file);
+                    user.setImageUrl(imageUrl);
+                    System.out.println("Image uploaded successfully: " + imageUrl);
+                } catch (Exception e) {
+                    System.err.println("Error uploading image: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
 
             // Encrypt the password
@@ -105,5 +95,12 @@ public class HomeController {
             session.setAttribute("message", new Message("Something went wrong! " + e.getMessage(), "danger"));
             return "redirect:/signup";
         }
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e, HttpServletRequest request) {
+        System.err.println("Error in HomeController: " + e.getMessage());
+        request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return "forward:/error";
     }
 }

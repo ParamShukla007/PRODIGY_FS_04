@@ -15,10 +15,6 @@ import java.security.Principal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Controller
 @RequestMapping("/user")
@@ -38,6 +38,9 @@ public class UserController {
 
     @Autowired
     private ContactRepository contactRepository;
+    
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -85,17 +88,19 @@ public class UserController {
             Principal principal) {
         try {
             // Processing and uploading file
-            if (imageFile.isEmpty()) {
-                System.out.println("File is empty, not uploaded");
-            } else {
-                // Save the file to the folder and update the name of contact
-                contact.setImageUrl(imageFile.getOriginalFilename());
-                File file = new ClassPathResource("static/img/contacts").getFile();
-                Path path = Paths.get(file.getAbsolutePath() + File.separator + imageFile.getOriginalFilename());
-                Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-                System.out.println("Image is uploaded successfully");
+            // Handle profile image upload
+                // Handle image upload
+            if (imageFile != null && !imageFile.isEmpty()) {
+                try {
+                    String imageUrl = cloudinaryService.uploadFile(imageFile);
+                    contact.setImageUrl(imageUrl);
+                    System.out.println("Image uploaded successfully: " + imageUrl);
+                } catch (Exception e) {
+                    System.err.println("Error uploading image: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
+
 
             if (result.hasErrors()) {
                 model.addAttribute("title", "Add Contact");
@@ -177,35 +182,43 @@ public class UserController {
     }
 
     @PostMapping("/process-update")
-    public String processUpdate(Principal principal, @ModelAttribute Contact contact, @RequestParam("imageFile") MultipartFile file, Model m, HttpSession session)
-    {
-        try{
+    public String processUpdate(Principal principal, 
+                          @ModelAttribute Contact contact, 
+                          @RequestParam("imageFile") MultipartFile file, 
+                          Model m, 
+                          HttpSession session) {
+        try {
             // Get the contact from the database
             Contact oldContact = this.contactRepository.findById(contact.getContact_id()).get();
-           //Processing and uploading file
-            if (!(file.isEmpty())) {
-                // Save the file to the folder and update the name of contact
-                //delete old image
-                File deleteFile = new ClassPathResource("static/img/contacts").getFile();
-                File oldContactImageFile = new File(deleteFile, oldContact.getImageUrl());
-                if (oldContactImageFile.exists()) {
-                    oldContactImageFile.delete();
+            
+            // Processing and uploading file
+            if (file != null && !file.isEmpty()) {
+                try {
+                    // Upload new image to Cloudinary
+                    String imageUrl = cloudinaryService.uploadFile(file);
+                    contact.setImageUrl(imageUrl);
+                    System.out.println("Image uploaded successfully: " + imageUrl);
+                } catch (Exception e) {
+                    System.err.println("Error uploading to Cloudinary: " + e.getMessage());
+                    // If upload fails, keep the old image
+                    contact.setImageUrl(oldContact.getImageUrl());
                 }
-                //update new image
-                File saveFile = new ClassPathResource("static/img/contacts").getFile();
-                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
-                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-                contact.setImageUrl(file.getOriginalFilename());
-            } 
+            } else {
+                // If no new file is uploaded, keep the existing image
+                contact.setImageUrl(oldContact.getImageUrl());
+            }
+
+            // Set user and save contact
             User user = this.userRepository.getUserByUserEmail(principal.getName());
             contact.setUser(user);
             this.contactRepository.save(contact);
+            
             session.setAttribute("message", new Message("Contact updated successfully!", "success"));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("message", new Message("Something went wrong! " + e.getMessage(), "danger"));
         }
+        
         return "redirect:/user/show-contacts/0";
     }
     @GetMapping("/profile")
@@ -248,15 +261,18 @@ public class UserController {
                 existingUser.setPhone_no(updatedUser.getPhone_no());
             }
 
-            // Handle profile image upload
+            // Handle profile image upload using Cloudinary
             if (file != null && !file.isEmpty()) {
-                // Save the new profile image
-                File saveFile = new ClassPathResource("static/img/profile").getFile();
-                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
-                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-                // Update the image URL in the user object
-                existingUser.setImageUrl(file.getOriginalFilename());
+                try {
+                    // Upload new image to Cloudinary
+                    String imageUrl = cloudinaryService.uploadFile(file);
+                    existingUser.setImageUrl(imageUrl);
+                    System.out.println("Profile image uploaded successfully: " + imageUrl);
+                } catch (Exception e) {
+                    System.err.println("Error uploading to Cloudinary: " + e.getMessage());
+                    // If upload fails, keep the old image
+                    session.setAttribute("message", new Message("Failed to upload image, but other details were updated.", "warning"));
+                }
             }
 
             // Save the updated user to the database
@@ -310,6 +326,21 @@ public class UserController {
             session.setAttribute("message", new Message("Something went wrong! " + e.getMessage(), "danger"));
         }
         return "redirect:/user/profile";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e, HttpServletRequest request) {
+        System.err.println("Error in UserController: " + e.getMessage());
+        request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return "forward:/error";
+    }
+
+    // Specific handler for pagination errors
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String handleIllegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
+        System.err.println("Pagination Error: " + e.getMessage());
+        request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, HttpStatus.BAD_REQUEST.value());
+        return "forward:/error";
     }
 }
 

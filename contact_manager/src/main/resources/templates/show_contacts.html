@@ -10,64 +10,79 @@
         <div class="container mx-auto px-4">
             <h1 class="text-4xl font-bold text-white mb-8 text-center">Your Contacts</h1>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div th:each="c : ${contacts}" class="animate-fadeInUp">
-                    <div class="card navy-card rounded-lg shadow-lg">
-                        <div class="card-body p-6">
-                            <!-- Replace icon with image -->
-                            <div class="text-center mb-4">
-                                <img th:src="@{'/img/contacts/' + ${c.imageUrl}}"
-                                     alt="Profile Image" 
-                                     class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-brand-cream">
-                            </div>
-                            
-                            <div class="flex items-center mb-4">
-                                <i class="fas fa-user text-brand-cream text-xl mr-3"></i>
-                                <h5 class="card-title text-xl font-bold" th:text="${c.name}"></h5>
-                            </div>
-                            <div class="space-y-2">
-                                <p class="card-text flex items-center">
-                                    <i class="fas fa-envelope text-brand-cream mr-3"></i>
-                                    <span th:text="${c.email}"></span>
-                                </p>
-                                <p class="card-text flex items-center">
-                                    <i class="fas fa-phone text-brand-cream mr-3"></i>
-                                    <span th:text="${c.phone_no}"></span>
-                                </p>
-                                
-                                <!-- Dropdown Section -->
-                                <div class="mt-4 border-t border-gray-600 pt-3">
-                                    <button class="flex items-center justify-between w-full text-brand-cream hover:text-opacity-80 transition-colors duration-200"
-                                            onclick="toggleDetails(this)">
-                                        <span class="text-sm font-semibold">View More Details</span>
-                                        <i class="fas fa-chevron-down transform transition-transform duration-200"></i>
-                                    </button>
-                                    <div class="hidden mt-3 space-y-2" style="display: none;">
-                                        <p class="card-text flex items-center text-sm">
-                                            <i class="fas fa-briefcase text-brand-cream mr-3"></i>
-                                            <span class="opacity-90" th:text="${c.work}">Designation</span>
-                                        </p>
-                                        <p class="card-text flex items-start text-sm">
-                                            <i class="fas fa-info-circle text-brand-cream mr-3 mt-1"></i>
-                                            <span class="opacity-90" th:text="${c.description}">Description</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex justify-end mt-4 space-x-2">
-                                <form method= "POST" th:action="@{'/user/update-contact/' + ${c.contact_id}}">
-                                <button type="submit" class="bg-brand-cream text-brand-navy px-3 py-1 rounded hover:bg-opacity-90 transition duration-300">
-                                    Edit
-                                </button>
-                                </form>
-                                <a th:href="@{'/user/delete-contact/' + ${c.contact_id}}" class="bg-brand-red text-white px-3 py-1 rounded hover:bg-opacity-90 transition duration-300">
-                                    Delete
-                                </a>
-                            </div>
-                        </div>
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="relative">
+                    <input type="text" 
+                           onkeyup="search()" 
+                           id="search-input" 
+                           placeholder="Search contacts..." 
+                           class="w-full px-6 py-3 bg-[#161b24] border-2 border-brand-cream/30 text-brand-cream placeholder-brand-cream/50 focus:border-brand-cream focus:outline-none rounded-lg transition-all duration-300 pr-12">
+                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-brand-cream/50">
+                        <i class="fas fa-search"></i>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Replace the grid container with this table structure -->
+            <div class="overflow-x-auto animate-fadeIn">
+                <table class="w-full table-auto">
+                    <thead class="bg-brand-navy border-b-2 border-brand-cream">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-brand-cream uppercase tracking-wider">Contact</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-brand-cream uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-brand-cream uppercase tracking-wider">Phone</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-brand-cream uppercase tracking-wider">Work</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-brand-cream uppercase tracking-wider">Description</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-brand-cream uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-brand-navy divide-y divide-brand-cream/20">
+                        <tr th:each="c : ${contacts}" class="hover:bg-opacity-90 transition-colors duration-150 contact-card">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <img th:src="${c.imageUrl}"
+                                             alt="Contact Image" 
+                                             class="h-10 w-10 rounded-full object-cover border-2 border-brand-cream">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-brand-cream contact-name" th:text="${c.name}"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-brand-cream contact-email" th:text="${c.email}"></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-brand-cream contact-phone" th:text="${c.phone_no}"></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-brand-cream/20 text-brand-cream" th:text="${c.work}">
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-brand-cream line-clamp-2" th:text="${c.description}"></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end items-center space-x-3">
+                                    <form method="POST" th:action="@{'/user/update-contact/' + ${c.contact_id}}" class="inline">
+                                        <button type="submit" 
+                                                class="p-2 bg-brand-cream text-brand-navy rounded-full hover:bg-opacity-90 transition-all">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </form>
+
+                                    <a th:href="@{'/user/delete-contact/' + ${c.contact_id}}"
+                                       class="p-2 bg-brand-red text-white rounded-full hover:bg-opacity-90 transition-all"
+                                       onclick="return confirm('Are you sure you want to delete this contact?')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             
             <!-- Pagination Section -->
@@ -145,6 +160,78 @@
                 transform: translateY(-2px);
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
+
+            /* Table Animation */
+            .animate-fadeIn {
+                animation: fadeIn 0.6s ease-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Row Animation */
+            .contact-card {
+                animation: slideIn 0.5s ease-out backwards;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            /* Stagger the row animations */
+            tr.contact-card:nth-child(1) { animation-delay: 0.1s; }
+            tr.contact-card:nth-child(2) { animation-delay: 0.2s; }
+            tr.contact-card:nth-child(3) { animation-delay: 0.3s; }
+            tr.contact-card:nth-child(4) { animation-delay: 0.4s; }
+            tr.contact-card:nth-child(5) { animation-delay: 0.5s; }
+            tr.contact-card:nth-child(6) { animation-delay: 0.6s; }
+            tr.contact-card:nth-child(7) { animation-delay: 0.7s; }
+            tr.contact-card:nth-child(8) { animation-delay: 0.8s; }
+            tr.contact-card:nth-child(9) { animation-delay: 0.9s; }
+            tr.contact-card:nth-child(10) { animation-delay: 1s; }
+
+            /* Search Bar Focus Effect */
+            #search-input:focus + div .fa-search {
+                color: #F8DE7E;
+                transform: scale(1.1);
+                transition: all 0.3s ease;
+            }
+
+            /* Table Row Hover Animation */
+            .contact-card {
+                transition: all 0.3s ease;
+            }
+
+            .contact-card:hover {
+                background-color: rgba(248, 222, 126, 0.05);
+                transform: translateX(10px);
+            }
+
+            /* Action Buttons Hover Animation */
+            .contact-card button,
+            .contact-card a {
+                transition: all 0.3s ease;
+            }
+
+            .contact-card button:hover,
+            .contact-card a:hover {
+                transform: scale(1.1);
+            }
         </style>
 
         <script>
@@ -168,6 +255,23 @@
                     }, 10);
                 }
             }
+
+              const search = () => {
+                const query = document.getElementById('search-input').value.toLowerCase();
+                const rows = document.querySelectorAll('.contact-card');
+                
+                rows.forEach(row => {
+                    const name = row.querySelector('.contact-name').textContent.toLowerCase();
+                    const email = row.querySelector('.contact-email').textContent.toLowerCase();
+                    const phone = row.querySelector('.contact-phone').textContent.toLowerCase();
+                    
+                    if (name.includes(query) || email.includes(query) || phone.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            };
         </script>
     </section>
 </body>

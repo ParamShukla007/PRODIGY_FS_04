@@ -48,7 +48,7 @@
             font-weight: bold;
         }
         
-        /* Sidebar layout */
+        /* Mobile-first responsive design */
         .sidebar-container {
             position: fixed;
             left: 0;
@@ -60,26 +60,28 @@
         }
         
         .vertical-strip {
-            background-color: #1e2430;  /* Changed to navy color */
-            width: 110px;  /* Changed to match base.html */
+            background-color: #1e2430;
+            width: 60px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 21;
             position: relative;
-            padding-top: 40px;  /* Added to match base.html */
+            padding-top: 20px;
         }
         
-        /* Remove the navy-strip since we changed the background color */
-        .navy-strip {
-            display: none;
+        /* Desktop adjustments */
+        @media (min-width: 768px) {
+            .vertical-strip {
+                width: 110px;
+                padding-top: 40px;
+            }
         }
         
-        /* Update vertical text container and text styles */
         .vertical-text-container {
             position: relative;
-            margin-top: 30px;
+            margin-top: 20px;
             height: 80%;
             display: flex;
             justify-content: center;
@@ -90,27 +92,45 @@
             transform: rotate(180deg);
             text-orientation: mixed;
             white-space: nowrap;
-            margin-top: 30px;
-            font-size: 28px;
+            margin-top: 20px;
+            font-size: 20px;
             font-weight: 900;
             line-height: 1;
             display: flex;
             height: 80%;
             text-align: center;
             justify-content: center;
-            letter-spacing: 26px;
-            color: #f5ecd6;  /* Changed to cream color */
+            letter-spacing: 15px;
+            color: #f5ecd6;
+        }
+        
+        /* Desktop adjustments for vertical text */
+        @media (min-width: 768px) {
+            .vertical-text {
+                font-size: 28px;
+                letter-spacing: 26px;
+                margin-top: 30px;
+            }
         }
         
         .hexagon-logo {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 30px;
+            width: 35px;
+            height: 35px;
+            margin-bottom: 20px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: transform 0.3s ease;
+        }
+
+        /* Desktop adjustments for logo */
+        @media (min-width: 768px) {
+            .hexagon-logo {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 30px;
+            }
         }
 
         .hexagon-logo:hover {
@@ -124,45 +144,29 @@
         
         .sidebar {
             background-color: #1e2430;
-            width: 220px;
+            width: 180px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             z-index: 20;
             transition: all 0.3s ease;
-            padding-top: 20px;
+            padding-top: 15px;
         }
         
-        .user-info {
-            color: #f5ecd6;
-            padding: 15px 20px;
-            font-size: 16px;
-            border-bottom: 1px solid rgba(245, 236, 214, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .user-name {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 4px;
+        /* Desktop adjustments for sidebar */
+        @media (min-width: 768px) {
+            .sidebar {
+                width: 220px;
+                padding-top: 20px;
+            }
         }
         
         .sidebar-content {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            justify-content: flex-end; /* Move content to bottom */
-            padding-bottom: 20px; /* Add some padding at the bottom */
-        }
-        
-        .sidebar-title {
-            padding: 15px 20px;
-            color: #f5ecd6;
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            border-top: 1px solid rgba(245, 236, 214, 0.2);
-            border-bottom: 1px solid rgba(245, 236, 214, 0.1);
+            justify-content: flex-end;
+            padding-bottom: 20px;
         }
         
         .nav-links {
@@ -171,7 +175,7 @@
         }
         
         .nav-link {
-            padding: 14px 20px;
+            padding: 12px 15px;
             color: #f5ecd6;
             opacity: 0.8;
             font-size: 14px;
@@ -179,6 +183,15 @@
             border-bottom: 1px solid rgba(245, 236, 214, 0.1);
             display: flex;
             align-items: center;
+            justify-content: center;
+        }
+        
+        /* Desktop adjustments for nav links */
+        @media (min-width: 768px) {
+            .nav-link {
+                padding: 14px 20px;
+                justify-content: flex-start;
+            }
         }
         
         .nav-link:hover {
@@ -187,47 +200,64 @@
         }
         
         .nav-link svg {
-            margin-right: 12px;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Desktop adjustments for nav link icons */
+        @media (min-width: 768px) {
+            .nav-link svg {
+                margin-right: 12px;
+                width: 18px;
+                height: 18px;
+            }
         }
         
         .sidebar-collapsed {
-            transform: translateX(-220px);
+            transform: translateX(-180px);
         }
         
-        /* Update the main-content class styles */
+        /* Desktop adjustments for collapsed sidebar */
+        @media (min-width: 768px) {
+            .sidebar-collapsed {
+                transform: translateX(-220px);
+            }
+        }
+        
         .main-content {
-            margin-left: 110px;
+            margin-left: 60px;
             position: relative;
             min-height: 100vh;
             background-color: #c4322b;
             overflow-x: hidden;
             transition: all 0.3s ease;
-            padding-top: 40px;
-            padding-left: 220px; /* Add padding for sidebar */
+            padding-top: 20px;
+            padding-left: 180px;
         }
 
-        /* Update the expanded state */
+        /* Desktop adjustments for main content */
+        @media (min-width: 768px) {
+            .main-content {
+                margin-left: 110px;
+                padding-top: 40px;
+                padding-left: 220px;
+            }
+        }
+
         .main-content-expanded {
-            margin-left: 110px;
-            padding-left: 0; /* Remove padding when sidebar is collapsed */
+            margin-left: 60px;
+            padding-left: 0;
+        }
+        
+        /* Desktop adjustments for expanded main content */
+        @media (min-width: 768px) {
+            .main-content-expanded {
+                margin-left: 110px;
+            }
         }
 
-        /* Add transition to the content */
         .main-content, .main-content-expanded {
             transition: padding-left 0.3s ease, margin-left 0.3s ease;
-        }
-
-        /* Update the content wrapper */
-        .relative.z-10.px-8 {
-            position: relative;
-            z-index: 10;
-            padding-left: 2rem;
-            padding-right: 2rem;
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
         }
         
         .bg-texture {
@@ -287,31 +317,166 @@
         .navy-card .card-title, .navy-card .card-text {
             color: white !important;
         }
-         #chatArea {
+        
+        /* Mobile-first responsive chat styles */
+        #chatArea {
             background-color: #1a1a2e;
             color: #fff;
             font-family: Arial, sans-serif;
             font-size: 14px;
             line-height: 1.5;
-            border: 2px solid #000000; /* Added black border */
-            padding: 15px;
+            border: 2px solid #000000;
+            padding: 10px;
             margin: 10px 0;
             border-radius: 8px;
-            height: 400px; /* Fixed height */
-            overflow-y: auto; /* Enable vertical scrolling */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Added subtle shadow */
+            height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Desktop adjustments for chat area */
+        @media (min-width: 768px) {
+            #chatArea {
+                height: 400px;
+                padding: 15px;
+                border-width: 4px;
+            }
         }
 
         .chat-message {
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 6px 8px;
+            margin-bottom: 6px;
             border-radius: 5px;
             background-color: #2e2e4d;
-            border: 1px solid #444; /* Added border to messages */
+            border: 1px solid #444;
+            font-size: 12px;
+            word-wrap: break-word;
+        }
+
+        /* Desktop adjustments for chat messages */
+        @media (min-width: 768px) {
+            .chat-message {
+                padding: 10px;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
         }
 
         .chat-message strong {
             color: #ffcc00;
+        }
+
+        /* Mobile responsive adjustments for chat interface */
+        .chat-container {
+            padding: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .chat-container {
+                padding: 2rem;
+            }
+        }
+
+        .chat-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .chat-title {
+                font-size: 1.875rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .input-field {
+            padding: 0.5rem 0.75rem;
+            font-size: 14px;
+            border-width: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .input-field {
+                padding: 0.75rem 1rem;
+                font-size: 16px;
+                border-width: 4px;
+            }
+        }
+
+        .send-button {
+            padding: 0.5rem 0.75rem;
+            font-size: 14px;
+            border-width: 2px;
+            min-width: 60px;
+        }
+
+        @media (min-width: 768px) {
+            .send-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 16px;
+                border-width: 4px;
+                min-width: auto;
+            }
+        }
+
+        /* Improved mobile layout for input section */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .input-section {
+                gap: 1rem;
+            }
+        }
+
+        .message-input-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .message-input-row {
+                gap: 0.75rem;
+            }
+        }
+
+        /* Container responsive adjustments */
+        .main-container {
+            border-width: 2px;
+            margin: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .main-container {
+                border-width: 4px;
+                margin: 2rem;
+            }
+        }
+
+        /* Logo section responsive */
+        .logo-section {
+            padding: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .logo-section {
+                padding: 2rem;
+            }
+        }
+
+        .logo-svg {
+            width: 60px;
+            height: 60px;
+        }
+
+        @media (min-width: 768px) {
+            .logo-svg {
+                width: 100px;
+                height: 100px;
+            }
         }
     </style>
 </head>
@@ -320,9 +485,6 @@
     <div class="sidebar-container">
         <!-- Vertical Strip with Logo and Text -->
         <div class="vertical-strip">
-            <!-- Navy strip at the right edge -->
-            <div class="navy-strip"></div>
-            
             <!-- Hexagon logo with white border and navy fill, with X inside -->
             <div class="hexagon-logo" id="toggle-sidebar">
                 <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -333,28 +495,20 @@
             
             <!-- Updated vertical text to start from bottom with space for buttons -->
             <div class="vertical-text-container">
-                <div class="vertical-text ">CONTACT VAULT</div>
+                <div class="vertical-text">CONTACT VAULT</div>
             </div>
         </div>
         
         <!-- Main Sidebar Content -->
         <div class="sidebar" id="sidebar">
-            <!-- User info section (replaces navbar) -->
-            <div class="user-info">
-                <div class="user-name">CHAT VAULT</div>
-            </div>
-            
             <!-- Content positioned at bottom -->
             <div class="sidebar-content">
                 <!-- Navigation Links -->
                 <div class="nav-links">
-                
-                     <a th:href="@{/user/dashboard}" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    <a th:href="@{/user/dashboard}" class="nav-link bg-brand-red hover:bg-brand-red/90">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>
-                        Go Back
                     </a>
                 </div>
             </div>
@@ -366,145 +520,156 @@
         <div class="bg-texture"></div>
         
         <!-- Content from child templates -->
-        <div class="relative z-10 ">
-             <section>
-        <div class="container mx-auto p-0 md:p-6 max-w-7xl">
-            <div class="flex flex-col md:flex-row border-4 border-brand-navy shadow-lg overflow-hidden my-8">
-                
-                <!-- Left Sidebar -->
-                <div class="w-full md:w-1/3 bg-brand-navy flex justify-center items-center p-8">
-                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M25 25L50 10L75 25L90 50L75 75L50 90L25 75L10 50L25 25Z" stroke="#f5ecd6" stroke-width="4" fill="none"/>
-                        <path d="M40 40L60 60M60 40L40 60" stroke="#f5ecd6" stroke-width="4"/>
-                    </svg>
-                </div>
-
-                <!-- Chat Interface -->
-                <div class="w-full md:w-3/4 bg-brand-red p-8">
-                    <div class="mb-6">
-                        <h2 class="text-3xl font-bold text-brand-cream">Real-Time Chat</h2>
-                    </div>
-
-                    <!-- Chat Messages Area -->
-                    <div id="chatArea" class="mb-6 h-96 overflow-y-auto border-4 border-brand-cream p-4 rounded-lg bg-brand-navy">
-                        <!-- Messages will appear here -->
-                    </div>
-
-                    <!-- User Input Form -->
-                    <div class="space-y-4">
-                        <!-- Name Input -->
-                        <div>
-                            <input type="text" 
-                                   id="userName"
-                                   class="w-full px-4 py-2 bg-transparent border-4 border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none rounded-lg"
-                                   placeholder="Your name...">
+        <div class="relative z-10">
+            <section>
+                <div class="container mx-auto p-0 max-w-7xl">
+                    <div class="flex flex-col lg:flex-row main-container border-brand-navy shadow-lg overflow-hidden">
+                        
+                        <!-- Left Sidebar - Hidden on mobile, visible on desktop -->
+                        <div class="hidden lg:flex lg:w-1/3 bg-brand-navy justify-center items-center logo-section">
+                            <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25 25L50 10L75 25L90 50L75 75L50 90L25 75L10 50L25 25Z" stroke="#f5ecd6" stroke-width="4" fill="none"/>
+                                <path d="M40 40L60 60M60 40L40 60" stroke="#f5ecd6" stroke-width="4"/>
+                            </svg>
                         </div>
 
-                        <!-- Message Input -->
-                        <div class="flex gap-2">
-                            <input type="text" 
-                                   id="messageInput"
-                                   class="flex-grow px-4 py-2 bg-transparent border-4 border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none rounded-lg"
-                                   placeholder="Type a message...">
-                            
-                            <button id="sendButton"
-                                    type="button"
-                                    class="px-6 py-2 bg-brand-navy border-4 border-brand-cream text-brand-cream font-bold hover:bg-brand-cream hover:text-brand-navy transition-all duration-300 rounded-lg">
-                                Send
-                            </button>
+                        <!-- Chat Interface -->
+                        <div class="w-full lg:w-2/3 bg-brand-red chat-container">
+                            <div class="mb-4 lg:mb-6">
+                                <h2 class="chat-title font-bold text-brand-cream">CHAT VAULT</h2>
+                            </div>
+
+                            <!-- Chat Messages Area -->
+                            <div id="chatArea" class="mb-4 lg:mb-6 overflow-y-auto border-brand-cream rounded-lg bg-brand-navy">
+                                <!-- Messages will appear here -->
+                            </div>
+
+                            <!-- User Input Form -->
+                            <div class="input-section">
+                                <!-- Name Input -->
+                                <div>
+                                    <input type="text" 
+                                           id="userName"
+                                           class="input-field w-full bg-transparent border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none rounded-lg"
+                                           placeholder="Your name...">
+                                </div>
+
+                                <!-- Message Input Row -->
+                                <div class="message-input-row">
+                                    <input type="text" 
+                                           id="messageInput"
+                                           class="input-field flex-grow bg-transparent border-brand-cream text-brand-cream placeholder-brand-cream placeholder-opacity-70 focus:outline-none rounded-lg"
+                                           placeholder="Type a message...">
+                                    
+                                    <button id="sendButton"
+                                            type="button"
+                                            class="send-button bg-brand-navy border-brand-cream text-brand-cream font-bold hover:bg-brand-cream hover:text-brand-navy transition-all duration-300 rounded-lg">
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>        
-    </section>
+                </div>        
+            </section>
 
-    <!-- Move scripts here, just before closing section tag -->
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script>
-        // Define variables in global scope
-        var stompClient = null;
+            <!-- Move scripts here, just before closing section tag -->
+            <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+            <script>
+                // Define variables in global scope
+                var stompClient = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM fully loaded and parsed'); // Debug log
+                document.addEventListener('DOMContentLoaded', function() {
+                    console.log('DOM fully loaded and parsed');
 
-            const sendButton = document.getElementById('sendButton');
-            if (sendButton) {
-                console.log('Send button found'); // Debug log
-                sendButton.addEventListener('click', function() {
-                    console.log('Send button clicked'); // Debug log
-                    sendMessage();
-                });
-            } else {
-                console.error('Send button not found'); // Debug log
-            }
-
-            connect();
-        });
-
-        // Define sendMessage function
-        function sendMessage() {
-            console.log('sendMessage function called'); // Debug log
-
-            const messageInput = document.getElementById('messageInput');
-            const userName = document.getElementById('userName').value;
-
-            if (messageInput.value && userName) {
-                const msg = {
-                    'sender': userName,
-                    'content': messageInput.value
-                };
-
-                try {
-                    console.log("Sending message:", msg); // Debug log
-                    if (stompClient && stompClient.connected) {
-                        stompClient.send("/app/sendMessage", {}, JSON.stringify(msg));
-                        messageInput.value = '';
+                    const sendButton = document.getElementById('sendButton');
+                    const messageInput = document.getElementById('messageInput');
+                    
+                    if (sendButton) {
+                        console.log('Send button found');
+                        sendButton.addEventListener('click', function() {
+                            console.log('Send button clicked');
+                            sendMessage();
+                        });
                     } else {
-                        console.error('WebSocket not connected');
-                        alert('Not connected to chat server. Please refresh the page.');
+                        console.error('Send button not found');
                     }
-                } catch (error) {
-                    console.error('Error sending message:', error);
+
+                    // Add Enter key support for message input
+                    if (messageInput) {
+                        messageInput.addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                sendMessage();
+                            }
+                        });
+                    }
+
+                    connect();
+                });
+
+                // Define sendMessage function
+                function sendMessage() {
+                    console.log('sendMessage function called');
+
+                    const messageInput = document.getElementById('messageInput');
+                    const userName = document.getElementById('userName').value;
+
+                    if (messageInput.value && userName) {
+                        const msg = {
+                            'sender': userName,
+                            'content': messageInput.value
+                        };
+
+                        try {
+                            console.log("Sending message:", msg);
+                            if (stompClient && stompClient.connected) {
+                                stompClient.send("/app/sendMessage", {}, JSON.stringify(msg));
+                                messageInput.value = '';
+                            } else {
+                                console.error('WebSocket not connected');
+                                alert('Not connected to chat server. Please refresh the page.');
+                            }
+                        } catch (error) {
+                            console.error('Error sending message:', error);
+                        }
+                    } else {
+                        alert('Please enter both name and message');
+                    }
                 }
-            } else {
-                alert('Please enter both name and message');
-            }
-        }
 
-        // Connect function
-        function connect() {
-            console.log("Attempting to connect..."); // Debug log
-            let socket = new SockJS('/ws');
-            stompClient = Stomp.over(socket);
+                // Connect function
+                function connect() {
+                    console.log("Attempting to connect...");
+                    let socket = new SockJS('/ws');
+                    stompClient = Stomp.over(socket);
 
-            stompClient.connect({}, 
-                function(frame) {
-                    console.log('Connected: ' + frame); // Debug log
-                    stompClient.subscribe('/topic/messages', function(message) {
-                        console.log('Received message:', message.body); // Debug log
-                        showMessage(JSON.parse(message.body));
-                    });
-                },
-                function(error) {
-                    console.error('Connection error:', error);
-                    alert('Failed to connect to the chat server. Please try again later.');
+                    stompClient.connect({}, 
+                        function(frame) {
+                            console.log('Connected: ' + frame);
+                            stompClient.subscribe('/topic/messages', function(message) {
+                                console.log('Received message:', message.body);
+                                showMessage(JSON.parse(message.body));
+                            });
+                        },
+                        function(error) {
+                            console.error('Connection error:', error);
+                            alert('Failed to connect to the chat server. Please try again later.');
+                        }
+                    );
                 }
-            );
-        }
 
-        function showMessage(message) {
-            let chatArea = document.getElementById('chatArea');
-            let messageElement = document.createElement('div');
-            messageElement.className = 'chat-message';
-            messageElement.innerHTML = `<strong>${message.sender}:</strong> ${message.content}`;
-            chatArea.appendChild(messageElement);
+                function showMessage(message) {
+                    let chatArea = document.getElementById('chatArea');
+                    let messageElement = document.createElement('div');
+                    messageElement.className = 'chat-message';
+                    messageElement.innerHTML = `<strong>${message.sender}:</strong> ${message.content}`;
+                    chatArea.appendChild(messageElement);
 
-            // Scroll to the bottom of the chat area
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
-    </script>
+                    // Scroll to the bottom of the chat area
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                }
+            </script>
         </div>
     </div>
     
