@@ -8,7 +8,7 @@
 <body>
     <section>
         <div class="container mx-auto px-4">
-            <h1 class="text-4xl font-bold text-white mb-8 text-center">Your Contacts</h1>
+            <h1 class="text-4xl font-bold text-white mb-8 text-center"></h1>
             
             <!-- Search Bar -->
             <div class="mb-6">
@@ -256,7 +256,7 @@
                 }
             }
 
-              const search = () => {
+            const search = () => {
                 const query = document.getElementById('search-input').value.toLowerCase();
                 const rows = document.querySelectorAll('.contact-card');
                 
@@ -264,14 +264,25 @@
                     const name = row.querySelector('.contact-name').textContent.toLowerCase();
                     const email = row.querySelector('.contact-email').textContent.toLowerCase();
                     const phone = row.querySelector('.contact-phone').textContent.toLowerCase();
+                    const work = row.querySelector('span').textContent.toLowerCase();
+                    const description = row.querySelector('.line-clamp-2').textContent.toLowerCase();
                     
-                    if (name.includes(query) || email.includes(query) || phone.includes(query)) {
+                    if (name.includes(query) || 
+                        email.includes(query) || 
+                        phone.includes(query) || 
+                        work.includes(query) || 
+                        description.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';
                     }
                 });
             };
+
+            // Add input event listener for real-time search
+            document.getElementById('search-input').addEventListener('input', () => {
+                search();
+            });
         </script>
     </section>
 </body>

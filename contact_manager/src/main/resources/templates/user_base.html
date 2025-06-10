@@ -297,7 +297,17 @@
         @media (max-width: 768px) {
             /* Hide text labels on mobile */
             .nav-text {
-                display: none;
+                display: none !important;
+            }
+            
+            /* Hide user info on mobile (welcome back text) */
+            .user-info {
+                display: none !important;
+            }
+            
+            /* Hide vertical "CONTACT VAULT" text on mobile */
+            .vertical-text {
+                display: none !important;
             }
             
             /* Reduce sidebar width on mobile */
@@ -306,7 +316,12 @@
                 padding-top: 20px;
             }
             
-            /* Adjust nav links for mobile */
+            /* Reduce vertical strip width on mobile */
+            .vertical-strip {
+                width: 70px;
+            }
+            
+            /* Adjust nav links for mobile - center icons */
             .nav-link {
                 padding: 14px 10px;
                 justify-content: center;
@@ -314,21 +329,18 @@
             
             .nav-link svg {
                 margin-right: 0;
-                width: 20px;
-                height: 20px;
+                width: 22px;
+                height: 22px;
             }
             
-            /* Hide user info on mobile */
-            .user-info {
-                display: none;
-            }
-            
-            /* Adjust main content padding for mobile */
+            /* Adjust main content for mobile */
             .main-content {
+                margin-left: 70px;
                 padding-left: 70px;
             }
             
             .main-content-expanded {
+                margin-left: 70px;
                 padding-left: 0;
             }
             
@@ -337,17 +349,17 @@
                 transform: translateX(-70px);
             }
             
-            /* Hide vertical text on very small screens */
-            .vertical-text {
-                font-size: 20px;
-                letter-spacing: 18px;
+            /* Make sure hexagon logo is still visible */
+            .hexagon-logo {
+                width: 40px;
+                height: 40px;
             }
         }
         
         @media (max-width: 480px) {
             /* Further adjustments for very small screens */
             .vertical-strip {
-                width: 80px;
+                width: 60px;
             }
             
             .sidebar {
@@ -355,7 +367,7 @@
             }
             
             .main-content {
-                margin-left: 80px;
+                margin-left: 60px;
                 padding-left: 60px;
             }
             
@@ -364,7 +376,7 @@
             }
             
             .main-content-expanded {
-                margin-left: 80px;
+                margin-left: 60px;
                 padding-left: 0;
             }
             
@@ -373,13 +385,13 @@
             }
             
             .nav-link svg {
-                width: 18px;
-                height: 18px;
+                width: 20px;
+                height: 20px;
             }
             
-            .vertical-text {
-                font-size: 16px;
-                letter-spacing: 14px;
+            .hexagon-logo {
+                width: 35px;
+                height: 35px;
             }
         }
     </style>
@@ -402,7 +414,7 @@
             
             <!-- Updated vertical text to start from bottom with space for buttons -->
             <div class="vertical-text-container">
-                <div class="vertical-text ">CONTACT VAULT</div>
+                <div class="vertical-text">CONTACT VAULT</div>
             </div>
         </div>
         
