@@ -140,7 +140,7 @@ public class UserController {
         String userName = p.getName();
         User user = userRepository.getUserByUserEmail(userName);
       
-        //current page and contact per page - 5
+        //current page and contact per page - 6
         Pageable pa = PageRequest.of(page, 6);
         Page<Contact> contacts = this.contactRepository.findContactsByUser(user.getUser_id(), pa);
         

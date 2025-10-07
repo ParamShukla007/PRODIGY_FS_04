@@ -7,9 +7,6 @@ import com.example.contact_manager.contact_manager.doa.UserRepository;
 import com.example.contact_manager.contact_manager.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-
-
 public class UserDetailsServiceImp implements UserDetailsService{
 
     @Autowired

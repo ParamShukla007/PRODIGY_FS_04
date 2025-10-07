@@ -41,8 +41,7 @@ public class User {
     private String about;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Contact> contacts = new ArrayList<>();
-    private transient MultipartFile imageFile; // Add this field
-
+    private transient MultipartFile imageFile; 
     public List<Contact> getContacts() {
         return contacts;
     }
